@@ -1,8 +1,11 @@
 import pygame
-import random
+import math
+
 pygame.init()
 screen = pygame.display.set_mode((1280, 800))
 done = False
+
+ship_img = pygame.image.load('img/ship.jpg')
 
 playerx, playery = 0,0
 playerx_a, playery_a = 0, 0
@@ -19,23 +22,15 @@ while not done:
     keys=pygame.key.get_pressed()
     if keys[pygame.K_a]:
     	playerx_a = -3
-    #	if playerx_a > -1 * max_a:
-    #		playerx_a -= 1
     elif keys[pygame.K_d]:
     	playerx_a = 3
-    #	if playerx_a < max_a:
-    #		playerx_a += 1
     else:
     	playerx_a = 0
 
     if keys[pygame.K_w]:
     	playery_a = -3
-    #	if playery_a > -1 * max_a:
-    #		playery_a -= 1
     elif keys[pygame.K_s]:
     	playery_a = 3
-    #	if playery_a < max_a:
-    #		playery_a += 1
     else:
     	playery_a = 0
 
@@ -64,5 +59,7 @@ while not done:
 
     
     screen.fill((0,0,0))
-    pygame.draw.circle(screen, (235, 244, 66), (playerx, playery), 20)
+    angle = (180 / math.pi) * -math.atan2(playerx_v, -playery_v)
+    ship_img_r = pygame.transform.rotate(ship_img, angle)
+    screen.blit(ship_img_r, (playerx, playery))
     pygame.display.flip()   
