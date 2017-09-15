@@ -1,24 +1,27 @@
 import pygame
 import math
 
+from bullet import bullet
+
 pygame.init()
-screen = pygame.display.set_mode((1280, 800))
+width, height = 1280, 800
+screen = pygame.display.set_mode((width, height))
 done = False
 
 ship_img = pygame.image.load('img/ship.jpg')
+ship_w = ship_img.get_rect().size[0]
+ship_middle = ship_img.get_rect().size[0]/2
+ship_h = ship_img.get_rect().size[1]
 
 playerx, playery = 0,0
 playerx_a, playery_a = 0, 0
 playerx_v, playery_v = 0, 0
 
-max_a = 5
-max_v = 10
+bullets = []
 
-while not done:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            done = True
-    
+max_v = 15
+
+while not done:  
     keys=pygame.key.get_pressed()
     if keys[pygame.K_a]:
     	playerx_a = -3
@@ -57,9 +60,32 @@ while not done:
     playerx += playerx_v
     playery += playery_v
 
+    if playerx < 0:
+    	playerx = width
+    elif playerx > width:
+    	playerx = 0
+
+    if playery < 0:
+   	    playery = height
+    elif playery > height:
+        playery = 0
+
+    angle = (180 / math.pi) * -math.atan2(playerx_v, -playery_v)
+
+    events = pygame.event.get()
+    for event in events:
+    	if event.type == pygame.QUIT:
+            done = True
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+            	if len(bullets) < 3:
+                	bullets.append(bullet(playerx_v, playery_v, playerx+ship_middle, playery, width, height))
     
     screen.fill((0,0,0))
-    angle = (180 / math.pi) * -math.atan2(playerx_v, -playery_v)
+    for b in bullets:
+    	bx,by = b.tick(bullets)
+    	if bx != None:
+    		pygame.draw.circle(screen, (244, 244, 66), (int(bx),int(by)), 5)
     ship_img_r = pygame.transform.rotate(ship_img, angle)
     screen.blit(ship_img_r, (playerx, playery))
     pygame.display.flip()   
