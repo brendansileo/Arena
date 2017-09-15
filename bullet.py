@@ -10,7 +10,7 @@ class bullet:
 	max_time = 30
 	screen_w = 0
 	screen_h = 0
-	hopped = False
+	hopped = True
 
 	def __init__(self, xv, yv, x, y, width, height):
 		self.xv = xv
