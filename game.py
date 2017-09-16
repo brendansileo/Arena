@@ -170,5 +170,5 @@ if not exit:
             ship_img_r = pygame.transform.rotate(ship_img, sh.angle)
             screen.blit(ship_img_r, (sh.x_p, sh.y_p))
         pygame.display.flip()   
-        clock.tick(60)
+        clock.tick(30)
 s.close()
