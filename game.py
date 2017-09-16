@@ -51,15 +51,16 @@ while name_entry:
 
 if not exit:
     screen.fill((0,0,0))
-
+    print 1
     textsurface = myfont.render('Waiting for an opponent...', False, (255, 255, 255))
     screen.blit(textsurface,(width/2, height/2))
     pygame.display.flip()
     s = socket.socket()
-    host = socket.gethostname()
+    host = "24.91.116.125"
     port = 8000
     s.connect((host, port))
     role = s.recv(1) #0 = host 1 = not host
+    print 2
     playernum = int(role)
     if role == "0":
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -75,7 +76,8 @@ if not exit:
         print "Waiting for partner"
         conn, addr = s.accept()
     else:
-        host = s.recv(12)
+        host = s.recv(20)
+        print host
         port = 8001
         s = socket.socket()
         s.connect((host, port))
